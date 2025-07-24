@@ -10,4 +10,5 @@ export type FormField = {
   type: 'text' | 'number' | 'checkbox' | 'textarea' | 'select';
   required?: boolean;
   options?: FieldOption[]; // only for select
+  hidden?: boolean;
 };

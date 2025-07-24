@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import type { FormField } from './types'; // Adjust path as needed
- // Adjust path as needed
 
 type DynamicFormProps = {
   fields: FormField[];

@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../redux/store';
+import type { RootState } from '../redux/store';
 import { updateWorkingHours } from '../redux/couriersSlice';
 
 const AdminDashboard: React.FC = () => {
-  const dispatch = useDispatch();
   const users = useSelector((state: RootState) => state.users);
   const couriers = useSelector((state: RootState) => state.couriers);
   const [editState, setEditState] = useState<Record<string, any>>({});
+  const dispatch = useDispatch()
 
   const hours = Array.from({ length: 24 }, (_, h) =>
     [`${String(h).padStart(2, '0')}:00`, `${String(h).padStart(2, '0')}:30`]
@@ -42,14 +42,33 @@ const AdminDashboard: React.FC = () => {
     <div style={{ padding: '2rem' }}>
       <h1>Admin Dashboard</h1>
 
-      {/* Users table remains unchanged */}
+      <section>
+        <h2>All Users</h2>
+        <table border={1} cellPadding={6}>
+          <thead>
+            <tr>
+              <th>First Name</th><th>Last Name</th><th>PID</th><th>Phone</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user: any) => (
+              <tr key={user.id}>
+                <td>{user.firstName}</td>
+                <td>{user.lastName}</td>
+                <td>{user.pid}</td>
+                <td>{user.phoneNumber}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
 
       <section style={{ marginTop: '2rem' }}>
         <h2>All Couriers</h2>
         <table border={1} cellPadding={6}>
           <thead>
             <tr>
-              <th>Name</th><th>Phone</th><th>Vehicle</th><th>Schedule (Editable)</th>
+              <th>Name</th><th>Phone</th><th>Vehicle</th><th>Schedule (Editable)</th><th>Busy Times</th>
             </tr>
           </thead>
           <tbody>
@@ -80,6 +99,13 @@ const AdminDashboard: React.FC = () => {
                         ))}
                       </select>
                       <button onClick={() => saveTime(c.id, day)}>Save</button>
+                    </div>
+                  ))}
+                </td>
+                <td>
+                  {c.busyTimes.map((b: any, i: number) => (
+                    <div key={i}>
+                      {b.day}, {b.time} → User: {b.userId}
                     </div>
                   ))}
                 </td>
